@@ -1,0 +1,25 @@
+{
+  "name": "patients-data-filter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "pack": "electron-packager . patients-data-filter --win --out .\\output --arch=x64 --overwrite --ignore=node_modules"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IceyBlackTea/Patients-Data-Filter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IceyBlackTea/Patients-Data-Filter/issues"
+  },
+  "homepage": "https://github.com/IceyBlackTea/Patients-Data-Filter#readme",
+  "devDependencies": {
+    "electron": "^10.1.5"
+  }
+}
