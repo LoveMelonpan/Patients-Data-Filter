@@ -9,8 +9,8 @@
     "pack": "electron-packager . patients-data-filter --win --out .\\output --arch=x64 --overwrite --ignore=node_modules --electron-version=10.1.5"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "IceyBlackTea(One_Random@outlook.com)",
+  "license": "GPL",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/IceyBlackTea/Patients-Data-Filter.git"

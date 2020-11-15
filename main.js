@@ -2,7 +2,7 @@
  * @Author: One_Random
  * @Date: 2020-11-10 23:03:54
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-13 13:29:47
+ * @LastEditTime: 2020-11-15 21:19:10
  * @FilePath: \Nodejs\Patients-Data-Filter\main.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
@@ -46,13 +46,17 @@ app.on('activate', () => {
 // handle events
 const ipcMain = require('electron').ipcMain
 
-ipcMain.on('open-directory-dialog', (event) => {
+ipcMain.on('open-directory-dialog', (event, property) => {
     dialog.showOpenDialog({
-        properties: ['openDirectory']
+        properties: [property]
+        
     }).then(result => {
         if (!result.canceled) {
-            event.sender.send('selectedItem', result.filePaths[0])
+            if (property == 'openDirectory') {
+                event.sender.send('selectedFolder', result.filePaths[0])
+            }      
         }
+
     }).catch(err => {
         console.log(err)
     })
