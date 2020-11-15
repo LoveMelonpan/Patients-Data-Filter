@@ -2,11 +2,11 @@
   "name": "patients-data-filter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "pack": "electron-packager . patients-data-filter --win --out .\\output --arch=x64 --overwrite --ignore=node_modules"
+    "pack": "electron-packager . patients-data-filter --win --out .\\output --arch=x64 --overwrite --ignore=node_modules --electron-version=10.1.5"
   },
   "keywords": [],
   "author": "",
@@ -18,8 +18,5 @@
   "bugs": {
     "url": "https://github.com/IceyBlackTea/Patients-Data-Filter/issues"
   },
-  "homepage": "https://github.com/IceyBlackTea/Patients-Data-Filter#readme",
-  "devDependencies": {
-    "electron": "^10.1.5"
-  }
+  "homepage": "https://github.com/IceyBlackTea/Patients-Data-Filter#readme"
 }
