@@ -106,5 +106,8 @@ dist
 # Output files
 output/
 
+# Test files
+test/
+
 # others
 package-lock.json

@@ -1,1 +1,14 @@
-{"check_test":["a","c"]}
+[
+    {
+        "name": "xuyao",
+        "title": "是否需要",
+        "type": "single",
+        "selections": ["需要", "不需要"]
+    },
+    {
+        "name": "fenlei",
+        "title": "分类",
+        "type": "multiple",
+        "selections": ["A", "B", "C"]
+    }
+]
