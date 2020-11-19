@@ -2,15 +2,15 @@
  * @Author: One_Random
  * @Date: 2020-11-15 22:12:14
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-17 16:02:47
- * @FilePath: \Nodejs\Patients-Data-Filter\js\apply-config.js
+ * @LastEditTime: 2020-11-19 11:40:23
+ * @FilePath: \Nodejs\Patients-Data-Filter\src\renderer\static\js\apply-config.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
 
 // when you use the html file as iframe
 const require=parent.window.require
 
-function getConfigFromJsonFile(path='./config.json') {
+function getConfigFromJsonFile(path='./config/config.json') {
     let fs = require('fs')
     return JSON.parse(fs.readFileSync(path, 'utf8').toString())
 }
