@@ -2,7 +2,7 @@
  * @Author: One_Random
  * @Date: 2020-11-10 23:03:54
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-23 19:28:36
+ * @LastEditTime: 2020-11-23 21:41:00
  * @FilePath: \Nodejs\Patients-Data-Filter\main.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
@@ -17,7 +17,8 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            // enableenableRemoteModule: true
         },
     })
 
@@ -46,3 +47,5 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+app.a = 1

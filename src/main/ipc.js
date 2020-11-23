@@ -2,7 +2,7 @@
  * @Author: One_Random
  * @Date: 2020-11-19 20:55:02
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-23 19:25:17
+ * @LastEditTime: 2020-11-23 22:01:54
  * @FilePath: \Nodejs\Patients-Data-Filter\src\main\ipc.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
@@ -10,6 +10,8 @@
 const { ipcMain } = require('electron')
 
 const { dialog } = require('electron')
+
+
 
 const getConfigObjectFromFile = require('./read-config').getConfigObjectFromFile
 
@@ -31,11 +33,11 @@ function setIpcMain() {
     })
 
     ipcMain.on('set-config-last-path', (event, path) => {
-        config.lastPath = path
-
         let fs = require('fs')
+
+        config.lastPath = path
     
-        fs.writeFile('./config/config.json', JSON.stringify(config, null, '\t'), (err, data) => {
+        fs.writeFile(require('path').join(__dirname, '../../config/config.json'), JSON.stringify(config, null, '\t'), (err, data) => {
             if (err) throw err
         });
 

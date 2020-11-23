@@ -2,7 +2,7 @@
  * @Author: One_Random
  * @Date: 2020-11-15 22:11:30
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-23 19:17:13
+ * @LastEditTime: 2020-11-23 21:51:37
  * @FilePath: \Nodejs\Patients-Data-Filter\src\renderer\static\js\save-json.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
@@ -51,7 +51,7 @@ function saveAsJsonFile(path, obj) {
 
     ipcRenderer.send('set-config-last-path', path)
 
-    ipcRenderer.on('return', (e, result) => {
+    ipcRenderer.once('return', (e, result) => {
         if (result) {
             window.alert('Save successfully!')
         }
