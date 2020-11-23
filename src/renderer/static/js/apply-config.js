@@ -8,7 +8,7 @@
  */
 
 // when you use the html file as iframe
-const require=parent.window.require
+//const require=parent.window.require
 
 function getConfigFromJsonFile(path='./config/config.json') {
     let fs = require('fs')
@@ -16,6 +16,7 @@ function getConfigFromJsonFile(path='./config/config.json') {
 }
 
 function setDisplayAsConfig(contentDiv, config) {
+    console.log(contentDiv)
     let html = ''
     for (let i = 0; i < config.length; i++) {
         let newHtml = ''

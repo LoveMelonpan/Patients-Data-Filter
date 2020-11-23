@@ -8,9 +8,10 @@
  */
 const { app, BrowserWindow, dialog } = require('electron')
 
+var win =null
 // setup a main window
 function createWindow() {
-    const win = new BrowserWindow( {
+    win = new BrowserWindow( {
         width: 800,
         height: 600,
         webPreferences: {
@@ -19,7 +20,8 @@ function createWindow() {
     })
 
     // win.setMenu(null)
-    win.loadFile('index.html')
+    win.loadFile('./src/renderer/explorer.html')
+    //win.loadFile('index.html')
     win.webContents.openDevTools()
 }
 
@@ -45,6 +47,11 @@ app.on('activate', () => {
 // main process ipc
 const ipcMain = require('electron').ipcMain
 
+//load new page
+ipcMain.on('open-page', (event,info) => {
+    win.loadFile('./src/renderer/test.html')
+})
+
 ipcMain.on('open-directory-dialog', (event, options) => {
     dialog.showOpenDialog(options).then(result => {
         if (!result.canceled) {
@@ -63,6 +70,14 @@ ipcMain.on('walk-selected-folder', (event, path) => {
 
     let result = walk(path)
 
-    event.sender.send('directory-structure', JSON.stringify(result))
-})
+    event.sender.send('directory-structure',JSON.stringify(result))
+}) 
 
+//同步通信
+ipcMain.on('walk-selected-folder-sync', (event, path) => {
+    let walk = require('./src/main/walk').walk
+
+    let result = walk(path)
+
+    event.returnValue=(JSON.stringify(result))
+}) 
