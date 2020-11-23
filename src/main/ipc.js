@@ -2,7 +2,7 @@
  * @Author: One_Random
  * @Date: 2020-11-19 20:55:02
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-23 22:01:54
+ * @LastEditTime: 2020-11-23 22:07:02
  * @FilePath: \Nodejs\Patients-Data-Filter\src\main\ipc.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
@@ -10,8 +10,6 @@
 const { ipcMain } = require('electron')
 
 const { dialog } = require('electron')
-
-
 
 const getConfigObjectFromFile = require('./read-config').getConfigObjectFromFile
 
@@ -66,7 +64,11 @@ function setIpcMain() {
 
     ipcMain.on('get-config-last-path', (event) => {
         event.returnValue = config.lastPath
-    })    
+    })
+    
+    ipcMain.on('get-current-path', (event) => {
+        event.returnValue = currentPath
+    })
 }
 
 
