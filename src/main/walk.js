@@ -2,11 +2,11 @@
  * @Author: One_Random
  * @Date: 2020-11-19 11:25:58
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-19 12:03:34
+ * @LastEditTime: 2020-11-23 19:29:04
  * @FilePath: \Nodejs\Patients-Data-Filter\src\main\walk.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
-const { exception } = require('console');
+
 const fs = require('fs')
 
 function walk(path) {

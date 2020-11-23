@@ -2,70 +2,67 @@
  * @Author: One_Random
  * @Date: 2020-11-15 22:12:14
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-19 11:40:23
+ * @LastEditTime: 2020-11-23 19:18:09
  * @FilePath: \Nodejs\Patients-Data-Filter\src\renderer\static\js\apply-config.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
 
 // when you use the html file as iframe
-const require=parent.window.require
-
-function getConfigFromJsonFile(path='./config/config.json') {
-    let fs = require('fs')
-    return JSON.parse(fs.readFileSync(path, 'utf8').toString())
+function getOptionsFromMainProcess() {
+    return ipcRenderer.sendSync('get-config-options', true)
 }
 
-function setDisplayAsConfig(contentDiv, config) {
+function setDisplayAsConfig(contentDiv, options) {
     let html = ''
-    for (let i = 0; i < config.length; i++) {
+    for (let i = 0; i < options.length; i++) {
         let newHtml = ''
-        if (config[i].type == 'single') {
+        if (options[i].type == 'single') {
             newHtml += '<div '
-                    + 'id="' + config[i].name + '-div"' 
-                    + 'class="' + 'single-config' + '"'
+                    + 'id="' + options[i].name + '-div"' 
+                    + 'class="' + 'single-options' + '"'
                     + '>'
 
-            for (let j = 0; j < config[i].selections.length; j++) {
+            for (let j = 0; j < options[i].selections.length; j++) {
                 let addHtml = '<input '
-                            + 'id="' + config[i].name + '-' + j + '"'
-                            + 'name="' + config[i].name + '"'
-                            + 'value="' + config[i].selections[j] + '"'
+                            + 'id="' + options[i].name + '-' + j + '"'
+                            + 'name="' + options[i].name + '"'
+                            + 'value="' + options[i].selections[j] + '"'
                             + 'type="' + 'radio' + '"'
-                            + '>' + config[i].selections[j] + '</>'
+                            + '>' + options[i].selections[j] + '</>'
                 
                 newHtml += addHtml + '<br/>'
             }
 
             newHtml += '</div>'
         }
-        else if (config[i].type == 'multiple') {
+        else if (options[i].type == 'multiple') {
             newHtml += '<div '
-                    + 'id="' + config[i].name + '-div"' 
-                    + 'class="' + 'multiple-config' + '"'
+                    + 'id="' + options[i].name + '-div"' 
+                    + 'class="' + 'multiple-options' + '"'
                     + '>'
 
-            for (let j = 0; j < config[i].selections.length; j++) {
+            for (let j = 0; j < options[i].selections.length; j++) {
                 let addHtml = '<input '
-                            + 'id="' + config[i].name + '-' + j + '"'
-                            + 'name="' + config[i].name + '"'
-                            + 'value="' + config[i].selections[j] + '"'
+                            + 'id="' + options[i].name + '-' + j + '"'
+                            + 'name="' + options[i].name + '"'
+                            + 'value="' + options[i].selections[j] + '"'
                             + 'type="' + 'checkbox' + '"'
-                            + '>' + config[i].selections[j] + '</>'
+                            + '>' + options[i].selections[j] + '</>'
                 
                 newHtml += addHtml + '<br/>'
             }
 
             newHtml += '</div>'
         }
-        else if (config[i].type == 'text') {
+        else if (options[i].type == 'text') {
             newHtml += '<div '
-                    + 'id="' + config[i].name + '-div"' 
-                    + 'class="' + 'text-config' + '"'
+                    + 'id="' + options[i].name + '-div"' 
+                    + 'class="' + 'text-options' + '"'
                     + '>'
 
             let addHtml = '<input '
-                    + 'id="' + config[i].name + '-' + j + '"'
-                    + 'name="' + config[i].name + '"'
+                    + 'id="' + options[i].name + '-' + j + '"'
+                    + 'name="' + options[i].name + '"'
                     + 'type="' + 'text' + '"'
                     + '>' + '</>'
 

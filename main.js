@@ -2,11 +2,14 @@
  * @Author: One_Random
  * @Date: 2020-11-10 23:03:54
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-19 12:14:38
+ * @LastEditTime: 2020-11-23 19:28:36
  * @FilePath: \Nodejs\Patients-Data-Filter\main.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
-const { app, BrowserWindow, dialog } = require('electron')
+
+const { app, BrowserWindow } = require('electron')
+
+const setIpcMain = require('./src/main/ipc').setIpcMain
 
 // setup a main window
 function createWindow() {
@@ -25,6 +28,8 @@ function createWindow() {
 
 app.on('ready', () => {
     createWindow()
+
+    setIpcMain()
 })
 
 app.on('window-all-closed', () => {
@@ -41,28 +46,3 @@ app.on('activate', () => {
         createWindow()
     }
 })
-
-// main process ipc
-const ipcMain = require('electron').ipcMain
-
-ipcMain.on('open-directory-dialog', (event, options) => {
-    dialog.showOpenDialog(options).then(result => {
-        if (!result.canceled) {
-            if (options.properties[0] == 'openDirectory') {
-                event.sender.send('selected-folder', result.filePaths[0])
-            }      
-        }
-
-    }).catch(err => {
-        console.error(err)
-    })
-})
-
-ipcMain.on('walk-selected-folder', (event, path) => {
-    let walk = require('./src/main/walk').walk
-
-    let result = walk(path)
-
-    event.sender.send('directory-structure', JSON.stringify(result))
-})
-

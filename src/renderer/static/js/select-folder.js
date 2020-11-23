@@ -2,16 +2,14 @@
  * @Author: One_Random
  * @Date: 2020-11-15 21:10:45
  * @LastEditors: One_Random
- * @LastEditTime: 2020-11-19 12:13:57
+ * @LastEditTime: 2020-11-23 19:18:41
  * @FilePath: \Nodejs\Patients-Data-Filter\src\renderer\static\js\select-folder.js
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
 
-// when you use the html file as iframe
-const require=parent.window.require
-
-const { ipcRenderer } = require('electron')
-
+function getLastPathFromMainProcess() {
+    return ipcRenderer.sendSync('config-last-path', true)
+}
 
 window.onload = () => {
     let selectFolderButton = this.document.querySelector('#select-folder-button')
