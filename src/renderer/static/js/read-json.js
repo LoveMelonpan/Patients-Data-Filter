@@ -9,7 +9,13 @@
 
 function getResultsObjectFromFile(path) {
     let fs = require('fs')
-    return JSON.parse(fs.readFileSync(path, 'utf8').toString())
+    //return JSON.parse(fs.readFileSync(path, 'utf8').toString())
+    try {
+        let res = JSON.parse(fs.readFileSync(path, 'utf8').toString())
+        return res
+    }catch(err) {
+        return null
+    }
 }
 
 function setOptionsDisplayAsResults(options, results) {

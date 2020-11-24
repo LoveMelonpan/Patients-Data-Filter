@@ -53,7 +53,7 @@ function saveAsJsonFile(path, obj) {
 
     ipcRenderer.once('return', (e, result) => {
         if (result) {
-            window.alert('Save successfully!')
+            console.log('Save successfully!')
         }
     })
 }

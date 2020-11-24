@@ -11,9 +11,10 @@ const { app, BrowserWindow } = require('electron')
 
 const setIpcMain = require('./src/main/ipc').setIpcMain
 
+var win =null
 // setup a main window
 function createWindow() {
-    const win = new BrowserWindow( {
+        win = new BrowserWindow( {
         width: 800,
         height: 600,
         webPreferences: {
@@ -23,14 +24,14 @@ function createWindow() {
     })
 
     // win.setMenu(null)
-    win.loadFile('index.html')
+    win.loadFile('./src/renderer/explorer.html')
     win.webContents.openDevTools()
 }
 
 app.on('ready', () => {
     createWindow()
 
-    setIpcMain()
+    setIpcMain(win)
 })
 
 app.on('window-all-closed', () => {

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./static/css/index.css">
+        <link href="./static/css/viewer.css" rel="stylesheet" type="text/css"/>
+        <link href="./static/css/app.css" rel="stylesheet" type="text/css"/>
+        <script src="./static/js/viewer.js"></script>
+        <title>Document</title>
+        <style>
+        </style>
+    </head>
+
+    <body>
+        <div id="app">
+            <el-container>
+                <el-aside id="navigationbar">
+                    <navigation></navigation>
+                </el-aside>
+                <el-container>
+                    <el-header style="background-color:#303133; color:white;font-family:Helvetica Neue,Helvetica;">
+                        <h4>{{image_path}}</h4>
+                    </el-header>
+                    <el-main style="display: flex; flex-direction: row;">
+                            <el-divider direction="vertical"></el-divider>
+                            <div id="image-area" style="align-items:center; justify-content:center;">
+                                <!--<el-image id="img" style="width: 400px; height: 400px" :src="image_path" fit="fill"></el-image>-->
+                                <img id='image'  :src="image_path" style="max-width:75% ; height:auto" onclick="showImage()" alt="Picture">
+                            </div>
+                            <el-divider direction="vertical"></el-divider>
+                            <div id = "right-area" style="align-items:center;justify-content:center; background-color:rgb(245,245,245);">
+                                <div id = "operation-area" style="margin: 100% 0 0 40%;"></div>
+                            </div>
+                            
+                    </el-main>
+                </el-container>
+            </el-container>
+        </div>
+      </body>
+
+        <script src="./static/js/global-require.js"></script>
+        <script src="./static/js/vue.js"></script>
+        <script src="./static/js/index.js"></script>
+        <script src="./static/js/select-folder.js"></script>
+        <script src="./static/js/apply-config.js"></script>
+        <script src="./static/js/read-json.js"></script>
+        <script src="./static/js/save-json.js"></script>
+
+        <script>
+            
+            var viewer = new Viewer(document.getElementById('image'), {
+
+                viewed() {
+                    viewer.zoomTo(1);
+                },
+            });
+
+            // load viewer
+            function showImage() {
+                viewer.destroy();
+                viewer =new Viewer(document.getElementById('image'), {
+
+                    viewed() {
+                        viewer.zoomTo(1);
+                    },
+                });
+
+                viewer.show();
+            }
+
+            //load operation
+            function showOperationDivison(path) {
+                
+                let store_path = path.substr(0,path.search('.jpg')) +'.json';
+                
+                console.log(store_path)
+
+                let operationDiv = document.getElementById('operation-area');
+
+                let options = getOptionsFromMainProcess()
+                setDisplayAsConfig(operationDiv, options)
+
+                let results = getResultsObjectFromFile(store_path)
+                if (results!=null) {
+                    setOptionsDisplayAsResults(options, results)
+                }
+                let store_bt = this.document.querySelector('#store_bt')
+
+                store_bt.onclick = () => {
+                    try {
+                        saveAsJsonFile(store_path,getOptionsJsonObject(options));
+                        vm.$message({
+                            message: '保存成功',
+                            type: 'success'
+                        });
+                    } catch(err) {
+                        vm.$message({
+                            message: err,
+                            type: 'error'
+                        });
+                    }
+                }
+            }
+
+            //navigation
+            Vue.component('navigation', {
+                data: function () {
+                    return {
+
+                        props:{
+                            label: 'name',
+                            children:'zones',
+                            isLeaf:'leaf',
+                            id:"id",
+                            parent:"parent",
+                            isExpanded:'isExpended',
+                        },
+
+                    }
+                },
+
+                methods :{
+
+                    loadNode(node, resolve) {
+
+                        if(node.level === 0) {
+
+                            rootData =[];
+
+                            if (this.$root.base_files.length > 0) {
+
+                                for (i in this.$root.base_files) {
+                                    let id = this.$root.base_path  + "\\" + this.$root.base_files[i]; 
+                                    let data = {name:this.$root.base_files[i],leaf:true,parent:this.$root.base_path,id:id};
+                                    rootData.push(data);
+                                }
+                            }
+
+                            if (this.$root.base_folders.length > 0 ) {
+
+                                for (i in this.$root.base_folders) {
+                                    let id = this.$root.base_path  + "\\" + this.$root.base_folders[i];
+                                    let data = {name:this.$root.base_folders[i],leaf:false,parent:this.$root.base_path,id:id,isExpanded:false};
+                                    rootData.push(data);
+                                }
+                            }
+
+                            resolve(rootData);
+                        }
+                    },
+
+                    closeNode(data,node,obj) {
+                        node.expanded =false
+                    },
+
+                    handleNodeClick(data,node,obj) {
+                        //folder
+                        if(data.leaf == false) {
+
+                            let result = ipcRenderer.sendSync('walk-selected-folder-sync', data.id)
+                            result = JSON.parse(result)
+                            let folders = result.folders
+                            let files = result.files
+
+
+                            children =[];
+
+                            if (files.length > 0) {
+                                for (i in files) {
+                                    if(files[i].search('.json') == -1) {
+                                        let id = data.id  + "\\" + files[i]; 
+                                        let child = {name:files[i],leaf:true,parent:data.id,id:id};
+                                        children.push(child);
+                                    }
+                                }
+                            }
+                            if (folders.length > 0 ) {
+                                for (i in folders) {
+                                    let id = data.id  + "\\" + folders[i];
+                                    let child = {name:folders[i],leaf:false,parent:data.id,id:id};
+                                    children.push(child);
+                                }
+                            }
+                            
+                            this.$refs['tree'].updateKeyChildren(data.id,children);
+                            if(data.isExpanded) {
+                                data.isExpanded = false
+                                node.expanded = false
+                            }
+                            else {
+                                data.isExpanded = true
+                                node.expanded = true
+                            }
+                        }
+                        //file
+                        else {
+
+                            this.$root.image_path = data.id;
+                            
+                            //update viewer
+                            viewer.update();
+
+                            //load select
+                            showOperationDivison(data.id)
+                        }
+
+                    }
+                    
+                },
+                template: '<el-tree ref="tree" node-key="id" :props="props" :load="loadNode"  highlight-current lazy @node-expand="closeNode" @node-click="handleNodeClick"></el-tree>'
+            })
+
+            var vm = new Vue({
+                el: '#app',
+                data: {
+                    base_files : [],
+                    base_folders : [],
+                    base_path : '',
+                    image_path : '',
+
+                },
+                
+                created: function () {
+                    this.base_path = sessionStorage.getItem('base_path');
+                    files = sessionStorage.getItem('base_folders');
+                    files = JSON.parse(files);
+                    this.base_files = files.files;
+                    this.base_folders = files.folders;
+                }
+                
+            })
+        </script>
+</html>

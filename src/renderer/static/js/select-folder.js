@@ -11,26 +11,31 @@ function getLastPathFromMainProcess() {
     return ipcRenderer.sendSync('config-last-path', true)
 }
 
-window.onload = () => {
-    let selectFolderButton = this.document.querySelector('#select-folder-button')
-
-    selectFolderButton.onclick = () => {
-        options = {
-            defaultPath : '.',
-            properties : ['openDirectory']
-        }
-        
-        ipcRenderer.send('open-directory-dialog', options)
+function selectFolder() {
+    options = {
+        defaultPath : '.',
+        properties : ['openDirectory']
     }
+    
+    ipcRenderer.send('open-directory-dialog', options) 
 }
 
 // get main process ipc return
 ipcRenderer.on('selected-folder', (e, path) => {
     console.log(path)
 
-    ipcRenderer.send('walk-selected-folder', path)
+    //ipcRenderer.send('walk-selected-folder', path)
+    var promise = new Promise(function(resolve, reject){
+        sessionStorage.setItem("base_path",path) 
+        resolve(path)
+    }).then(()=>{
+        ipcRenderer.sendSync('walk-selected-folder', path)
+    }) 
 })
 
 ipcRenderer.on('directory-structure', (e, result) => {
     console.log(result)
+    sessionStorage.setItem("base_folders",result)
+
+    ipcRenderer.send('open-page',result)
 })

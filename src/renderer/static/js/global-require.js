@@ -7,7 +7,7 @@
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
 
-const require = parent.window.require
+//const require = parent.window.require
 
 const { ipcRenderer, remote } = require('electron')
 

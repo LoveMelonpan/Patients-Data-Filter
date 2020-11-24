@@ -14,7 +14,7 @@ const { dialog } = require('electron')
 const getConfigObjectFromFile = require('./read-config').getConfigObjectFromFile
 
 // main process ipc
-function setIpcMain() {
+function setIpcMain(win) {
     var config = getConfigObjectFromFile()
     var currentPath = ''
 
@@ -68,6 +68,19 @@ function setIpcMain() {
     
     ipcMain.on('get-current-path', (event) => {
         event.returnValue = currentPath
+    })
+
+    ipcMain.on('walk-selected-folder-sync', (event, path) => {
+        let walk = require('./walk').walk
+    
+        let result = walk(path)
+    
+        event.returnValue=(JSON.stringify(result))
+    })
+
+    //load new page
+    ipcMain.on('open-page', (event,info) => {
+        win.loadFile('./src/renderer/test.html')
     })
 }
 
