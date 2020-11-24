@@ -11,10 +11,7 @@
         <style>
         </style>
     </head>
-<<<<<<< HEAD
 
-=======
->>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
     <body>
         <div id="app">
             <el-container>
@@ -41,25 +38,16 @@
             </el-container>
         </div>
       </body>
-<<<<<<< HEAD
 
         <script src="./static/js/global-require.js"></script>
-=======
->>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
         <script src="./static/js/vue.js"></script>
         <script src="./static/js/index.js"></script>
         <script src="./static/js/select-folder.js"></script>
         <script src="./static/js/apply-config.js"></script>
-<<<<<<< HEAD
         <script src="./static/js/read-json.js"></script>
         <script src="./static/js/save-json.js"></script>
 
         <script>
-            
-=======
-        <script src="./static/js/save-json.js"></script>
-        <script>
->>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
             var viewer = new Viewer(document.getElementById('image'), {
 
                 viewed() {
@@ -88,7 +76,6 @@
                 console.log(store_path)
 
                 let operationDiv = document.getElementById('operation-area');
-<<<<<<< HEAD
 
                 let options = getOptionsFromMainProcess()
                 setDisplayAsConfig(operationDiv, options)
@@ -97,33 +84,20 @@
                 if (results!=null) {
                     setOptionsDisplayAsResults(options, results)
                 }
-=======
-                let config = getConfigFromJsonFile();
-                setDisplayAsConfig(operationDiv, config)
-
->>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
                 let store_bt = this.document.querySelector('#store_bt')
 
                 store_bt.onclick = () => {
                     try {
-<<<<<<< HEAD
                         saveAsJsonFile(store_path,getOptionsJsonObject(options));
-=======
-                        saveAsJsonFile(store_path,getConfigJsonObject(config));
->>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
                         vm.$message({
                             message: '保存成功',
                             type: 'success'
                         });
                     } catch(err) {
-<<<<<<< HEAD
                         vm.$message({
                             message: err,
                             type: 'error'
                         });
-=======
-                        vm.$message.error(error);
->>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
                     }
                 }
             }
@@ -193,17 +167,11 @@
 
                             if (files.length > 0) {
                                 for (i in files) {
-<<<<<<< HEAD
                                     if(files[i].search('.json') == -1) {
                                         let id = data.id  + "\\" + files[i]; 
                                         let child = {name:files[i],leaf:true,parent:data.id,id:id};
                                         children.push(child);
                                     }
-=======
-                                    let id = data.id  + "\\" + files[i]; 
-                                    let child = {name:files[i],leaf:true,parent:data.id,id:id};
-                                    children.push(child);
->>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
                                 }
                             }
                             if (folders.length > 0 ) {
@@ -226,14 +194,16 @@
                         }
                         //file
                         else {
+                            if(data.id.search('txt') != -1) {
 
-                            this.$root.image_path = data.id;
-                            
-                            //update viewer
-                            viewer.update();
-
-                            //load select
-                            showOperationDivison(data.id)
+                            }
+                            else {
+                                this.$root.image_path = data.id;                           
+                                //update viewer
+                                viewer.update();
+                                //load select
+                                showOperationDivison(data.id)
+                            }
                         }
 
                     }

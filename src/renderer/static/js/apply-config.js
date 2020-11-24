@@ -8,23 +8,11 @@
  */
 
 // when you use the html file as iframe
-<<<<<<< HEAD
 function getOptionsFromMainProcess() {
     return ipcRenderer.sendSync('get-config-options', true)
 }
 
 function setDisplayAsConfig(contentDiv, options) {
-=======
-//const require=parent.window.require
-
-function getConfigFromJsonFile(path='./config/config.json') {
-    let fs = require('fs')
-    return JSON.parse(fs.readFileSync(path, 'utf8').toString())
-}
-
-function setDisplayAsConfig(contentDiv, config) {
-    console.log(contentDiv)
->>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
     let html = ''
     for (let i = 0; i < options.length; i++) {
         let newHtml = ''
