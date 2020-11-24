@@ -7,6 +7,7 @@
  * @Description: Copyright © 2020 One_Random. All rights reserved.
  */
 
+<<<<<<< HEAD
 const { app, BrowserWindow } = require('electron')
 
 const setIpcMain = require('./src/main/ipc').setIpcMain
@@ -15,6 +16,12 @@ var win =null
 // setup a main window
 function createWindow() {
         win = new BrowserWindow( {
+=======
+var win =null
+// setup a main window
+function createWindow() {
+    win = new BrowserWindow( {
+>>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
         width: 800,
         height: 600,
         webPreferences: {
@@ -25,6 +32,10 @@ function createWindow() {
 
     // win.setMenu(null)
     win.loadFile('./src/renderer/explorer.html')
+<<<<<<< HEAD
+=======
+    //win.loadFile('index.html')
+>>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
     win.webContents.openDevTools()
 }
 
@@ -49,4 +60,44 @@ app.on('activate', () => {
     }
 })
 
+<<<<<<< HEAD
 app.a = 1
+=======
+// main process ipc
+const ipcMain = require('electron').ipcMain
+
+//load new page
+ipcMain.on('open-page', (event,info) => {
+    win.loadFile('./src/renderer/test.html')
+})
+
+ipcMain.on('open-directory-dialog', (event, options) => {
+    dialog.showOpenDialog(options).then(result => {
+        if (!result.canceled) {
+            if (options.properties[0] == 'openDirectory') {
+                event.sender.send('selected-folder', result.filePaths[0])
+            }      
+        }
+
+    }).catch(err => {
+        console.error(err)
+    })
+})
+
+ipcMain.on('walk-selected-folder', (event, path) => {
+    let walk = require('./src/main/walk').walk
+
+    let result = walk(path)
+
+    event.sender.send('directory-structure',JSON.stringify(result))
+}) 
+
+//同步通信
+ipcMain.on('walk-selected-folder-sync', (event, path) => {
+    let walk = require('./src/main/walk').walk
+
+    let result = walk(path)
+
+    event.returnValue=(JSON.stringify(result))
+}) 
+>>>>>>> c087c0af72d6a5e032b44b91aaf581a77aa67696
